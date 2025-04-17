@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EqualizeTech Prototype</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(to bottom, #000000, #f2f2f6, #b2d0b2);
+      color: #000;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    header {
+      background: #333;
+      color: #fff;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .container { max-width: 1200px; margin: auto; padding: 0 20px; }
+    .nav-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #fff;
+    }
+    .nav-brand img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    .nav-links li { margin-left: 20px; }
+    .nav-links li a {
+      color: #fff;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover { color: #ddd; }
+    .hamburger { display: none; flex-direction: column; cursor: pointer; }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 4px 0;
+    }
+
+    main { padding: 20px 0; }
+    section {
+      background: linear-gradient(135deg, #000, #fff, #008000);
+      padding: 30px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    section h1 { text-align: center; margin-bottom: 20px; color: #000; }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 20px;
+    }
+    .card {
+      background: linear-gradient(135deg, #000, #433f30, #ffe626);
+      color: #fff;
+      flex: 1 1 calc(33% - 40px);
+      min-width: 250px;
+      padding: 20px;
+      border-radius: 8px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+    .card:hover { transform: translateY(-5px); filter: brightness(1.2); }
+    .card h2 { margin-bottom: 10px; font-size: 1.2em; }
+    .card a {
+      display: inline-block;
+      background: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+    .card a:hover { background: #555; }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .actions .btn {
+      background: #333;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .actions .btn:hover { background: #555; }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+    }
+
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #333;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: none;
+      cursor: pointer;
+      z-index: 100;
+    }
+    #backToTop:hover { background: #555; }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+    }
+    .modal-content {
+      background: linear-gradient(135deg, #000, #aaf6ac, #008000);
+      color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+    .modal-content input, .modal-content textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+      background: #fff;
+      color: #000;
+    }
+    .modal-content button {
+      padding: 10px 20px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .modal-content button:hover { background: #555; }
+
+    @media (max-width: 768px) {
+      .cards-container { flex-direction: column; align-items: center; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: #333;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 10px;
+        border-radius: 5px;
+      }
+      .nav-links li { margin: 10px 0; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav-menu">
+      <div class="nav-brand">
+        <img src="equalizetech-logo.png" alt="EqualizeTech Logo">
+        <span>EqualizeTech</span>
+      </div>
+      <div class="hamburger" onclick="toggleNav()">
+        <div></div><div></div><div></div>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#community">Community</a></li>
+        <li><a href="#help">Help Center</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="home">
+      <h1>Current News & Awareness</h1>
+      <div class="cards-container">
+        <div class="card"><h2>Discrimination Case Update</h2><p>Latest updates on discrimination cases.</p><a href="#">Read More</a></div>
+        <div class="card"><h2>Know Your Rights</h2><p>Learn about your rights and how to protect them.</p><a href="#">Learn More</a></div>
+        <div class="card"><h2>Upcoming Rally</h2><p>Join our rally to promote unity.</p><a href="#">Details</a></div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <h1>Resources</h1>
+      <div class="cards-container">
+        <div class="card"><h2>Legal Rights</h2><p>Information on legal rights and protection.</p><a href="#">More Info</a></div>
+        <div class="card"><h2>Mental Health</h2><p>Access mental health support services.</p><a href="#">Get Support</a></div>
+        <div class="card"><h2>Job Listings</h2><p>Opportunities promoting diversity and inclusion.</p><a href="#">View Jobs</a></div>
+      </div>
+    </section>
+
+    <section id="community">
+      <h1>Community Hub</h1>
+      <p style="text-align: center;">Share your experiences and connect with others.</p>
+      <div class="actions">
+        <a class="btn" onclick="openModal('storyModal')">Share Your Story</a>
+        <a class="btn" href="#">Find a Mentor</a>
+        <a class="btn" href="#">Join Our Network</a>
+      </div>
+      <div id="storyFeed" style="margin-top:30px;"></div>
+    </section>
+
+    <section id="help">
+      <h1>Help Center</h1>
+      <p style="text-align: center;">Get legal and emergency support.</p>
+      <div class="actions">
+        <a class="btn" href="#">Legal Assistance</a>
+        <a class="btn" href="#">Emergency Support</a>
+      </div>
+    </section>
+  </main>
+
+  <footer><p>&copy; 2025 EqualizeTech. All rights reserved.</p></footer>
+  <div id="backToTop" onclick="scrollToTop()">Top</div>
+
+  <div class="modal" id="storyModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('storyModal')">&times;</span>
+      <h2>Share Your Story</h2>
+      <form id="storyForm" onsubmit="addStory(event)">
+        <label for="storyName">Your Name:</label><br>
+        <input type="text" id="storyName" required><br>
+        <label for="storyText">Your Experience:</label><br>
+        <textarea id="storyText" rows="4" required></textarea><br>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function toggleNav() {
+      var navLinks = document.getElementById('navLinks');
+      navLinks.style.display = (navLinks.style.display === "flex") ? "none" : "flex";
+      navLinks.style.flexDirection = "column";
+    }
+    window.onscroll = function() { toggleBackToTop(); };
+    function toggleBackToTop() {
+      var btn = document.getElementById('backToTop');
+      btn.style.display = (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) ? "block" : "none";
+    }
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    function openModal(id) { document.getElementById(id).style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+    window.onclick = function(e) {
+      var modal = document.getElementById('storyModal');
+      if (e.target == modal) { modal.style.display = "none"; }
+    }
+    function addStory(e) {
+      e.preventDefault();
+      var name = document.getElementById("storyName").value.trim();
+      var story = document.getElementById("storyText").value.trim();
+      if (name && story) {
+        var div = document.createElement("div");
+        div.style.background = "linear-gradient(135deg, #000, #aaf6ac, #008000)";
+        div.style.color = "#fff"; div.style.padding = "20px";
+        div.style.marginBottom = "15px"; div.style.borderRadius = "8px";
+        div.style.boxShadow = "0 2px 5px rgba(0,0,0,0.3)";
+        div.innerHTML = "<h3 style='margin-bottom:10px;'>" + name + "</h3><p>" + story + "</p>";
+        document.getElementById("storyFeed").prepend(div);
+        document.getElementById("storyForm").reset();
+        closeModal("storyModal");
+      } else { alert("Please fill out both fields."); }
+    }
+  </script>
+
+</body>
+</html>
